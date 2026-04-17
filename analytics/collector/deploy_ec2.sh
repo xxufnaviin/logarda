@@ -1,0 +1,1 @@
+# take collectors folder into ec2 instance and execute run_collectors.sh

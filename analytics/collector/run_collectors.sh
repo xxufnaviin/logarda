@@ -1,0 +1,1 @@
+# run both together after building in ec2
