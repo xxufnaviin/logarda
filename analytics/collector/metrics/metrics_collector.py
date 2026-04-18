@@ -1,16 +1,17 @@
-import postgres
-import boto3
+from utils.postgres import *
+from utils.aws import *
+
 from datetime import datetime, timezone
 import pandas as pd
 
-AWS_REGION = "ap-southeast-1"
-      
+
 # establish connection with cloudwatch and ec2      
-cloudwatch = boto3.client("cloudwatch", region_name=AWS_REGION)
-ec2_client = boto3.client('ec2', region_name=AWS_REGION)
+cloudwatch = AWS.create_client("cloudwatch")
+ec2_client = AWS.create_client("ec2")
 
 # establish connection with PostgreSQL database
-# conn = 
+conn = postgres.create_connection()
+
 
 
 
@@ -24,4 +25,4 @@ if __name__ == "__main__":
             host_name = f"ip-{instance['PrivateIpAddress'].replace('.','-')}"
             all_instances.append((instance_id, host_name))
 
-
+print(all_instances)
