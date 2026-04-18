@@ -5,7 +5,7 @@ CREATE TABLE metrics (
     network DOUBLE PRECISION NOT NULL,
     memory DOUBLE PRECISION NOT NULL, 
     
-    PRIMARY KEY (metricTime, instance_id) --composite primary key to prevent double entries at same timestamp for single instance
+    PRIMARY KEY (metricTime, instanceID) --composite primary key to prevent double entries at same timestamp for single instance
 );
 
 CREATE TABLE predicted_metrics (
@@ -15,7 +15,7 @@ CREATE TABLE predicted_metrics (
     network DOUBLE PRECISION NOT NULL,
     memory DOUBLE PRECISION NOT NULL, 
     
-    PRIMARY KEY (metricTime, instance_id) --composite primary key to prevent double entries at same timestamp for single instance
+    PRIMARY KEY (metricTime, instanceID) --composite primary key to prevent double entries at same timestamp for single instance
 );
 
 CREATE TABLE logs (
