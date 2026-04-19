@@ -1,14 +1,15 @@
 from utils.postgres import *
 from utils.aws import *
+from utils.redis import *
 from utils.utils import *
 
 
 # establish connection with cloudtrail
 cloudtrail = Cloudtrail_Client()
 
-
-# establish connection with PostgreSQL database
+# establish connection with PostgreSQL database and Redis
 conn = Postgres.create_connection()
+r = Redis.create_connection()
 
 if __name__ == "__main__":
     print("Checking for errors!")
@@ -25,7 +26,8 @@ if __name__ == "__main__":
                 # check if value if succeed in inserting value into database, only enqueue redis if success
                 if Postgres.insert_data(conn, error_values, data="logs"):
                     # enqueue errors into redis 
-                    pass
+                    Redis.enqueue_message(r, "error_messages", error_values)
+                    
                 else:
                     print("Duplicate errors will not be enqueued to Redis!")
 
@@ -36,4 +38,5 @@ if __name__ == "__main__":
     else:
         print("No error events for the past 15 minutes!")
         pass
-        
+    
+    conn.close()

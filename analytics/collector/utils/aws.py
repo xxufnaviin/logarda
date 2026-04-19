@@ -2,6 +2,7 @@ import boto3
 from datetime import datetime, timezone, timedelta
 import time
 import json
+
 class AWS_Client:
     
     def __init__(self, service):        
@@ -105,7 +106,7 @@ class Cloudtrail_Client(AWS_Client):
         super().__init__("cloudtrail")
         self.all_events = []
         self.next_token = None
-        self.target_event_count = 200
+        self.target_event_count = 500
         self.error_events = []
 
     def get_error_events(self):
