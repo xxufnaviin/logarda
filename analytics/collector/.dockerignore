@@ -1,9 +1,0 @@
-.gitignore
-.venv/
-*.pem
-.gitkeep
-*.csv
-*.env
-*.envrc
-__pycache__/
-.git
