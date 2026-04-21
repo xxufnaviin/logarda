@@ -7,6 +7,6 @@ docker build -t collector:latest -f Dockerfile .
 
 # add cron jobs to run both containers and remove them after done
 (
-echo "*/15 * * * * docker run --env-file .env --rm collector:latest metrics/metrics_collector.py"; 
-echo "*/15 * * * * docker run --env-file .env --rm collector:latest logs/logs_collector.py"
+echo "*/15 * * * * /usr/bin/docker run --env-file /home/ubuntu/collector/.env --rm collector:latest metrics/metrics_collector.py"; 
+echo "*/15 * * * * /usr/bin/docker run --env-file /home/ubuntu/collector/.env --rm collector:latest logs/logs_collector.py"
 ) | crontab -
