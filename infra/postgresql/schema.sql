@@ -25,5 +25,5 @@ CREATE TABLE logs (
     serviceName VARCHAR NOT NULL,
     eventName VARCHAR NOT NULL,
     
-    PRIMARY KEY (eventTime, errorCode, errorMessage) --composite primary keys to prevent double entries at same timestamp for single instance
+    PRIMARY KEY (eventTime, errorCode, errorMessage) --composite primary keys to prevent double entries at same timestamp for same error code + error message
 );
