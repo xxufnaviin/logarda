@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /collector
+WORKDIR /ingestion
 
 ENV PYTHONPATH=".:$PYTHONPATH" 
 

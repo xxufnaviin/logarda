@@ -1,0 +1,7 @@
+.venv/
+*.pem
+*.csv
+*.env
+*.envrc
+__pycache__/
+
