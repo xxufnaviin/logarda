@@ -1,18 +1,15 @@
 import redis
-import os
-from dotenv import load_dotenv
 import json
 
-load_dotenv()
+import config.secrets 
 
-REDIS_HOST = os.getenv("REDIS_HOST")
-REDIS_PORT = int(os.getenv("REDIS_PORT"))
+
 
 # only used as namespace for module, not OOP
 class Redis:
     def create_connection():
-        return redis.Redis(host=REDIS_HOST, 
-                           port=REDIS_PORT)
+        return redis.Redis(host=config.secrets.REDIS_HOST, 
+                           port=config.secrets.REDIS_PORT)
     
     def enqueue_message(r:redis.Redis, queue_name, message):
         # left push into queue (right pop when dequeue) of the given queue name

@@ -2,15 +2,18 @@ import boto3
 from datetime import datetime, timezone, timedelta
 import time
 import json
+import config.secrets
+
 
 class AWS_Client:
     
-    def __init__(self, service):        
-        self.AWS_REGION = "ap-southeast-1"    
+    def __init__(self, service):          
         self.service = service
 
         # establish connection with AWS services
-        self.client = boto3.client(self.service, region_name=self.AWS_REGION)
+        self.client = boto3.client(self.service, region_name=config.secrets.AWS_REGION, 
+                                   aws_access_key_id=config.secrets.AWS_ACCESS_KEY_ID, 
+                                   aws_secret_access_key=config.secrets.AWS_SECRET_ACCESS_KEY)
 
 class EC2_Client(AWS_Client):
 

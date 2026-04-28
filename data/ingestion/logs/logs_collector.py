@@ -2,14 +2,20 @@ from utils.postgres import *
 from utils.aws import *
 from utils.redis import *
 from utils.utils import *
-
-
-# establish connection with cloudtrail
-cloudtrail = Cloudtrail_Client()
+from config.variables import *
+import config.secrets
 
 # establish connection with PostgreSQL database and Redis
 conn = Postgres.create_connection()
 r = Redis.create_connection()
+
+# set access keys for AWS
+keys, empty = Postgres.get_aws_access_keys(conn, config.secrets.USERNAME)
+if not empty:
+    set_aws_access_keys(keys)
+
+# establish connection with cloudtrail
+cloudtrail = Cloudtrail_Client()
 
 if __name__ == "__main__":
     print("Checking for errors!")

@@ -1,26 +1,15 @@
 import psycopg2
 from psycopg2 import errors
-import os
-from dotenv import load_dotenv
+import config.secrets 
 
-load_dotenv()
-
-POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-POSTGRES_DATABASE = os.getenv("POSTGRES_DATABASE")
-
-METRICS_TABLE = 'metrics'
-PREDICTED_METRICS_TABLE = "predicted_metrics"
-LOGS_TABLE = "logs"
 
 # only used as namespace for module, not OOP
 class Postgres:
     def create_connection():
-        return psycopg2.connect(host=POSTGRES_HOST, 
-                            database=POSTGRES_DATABASE, 
-                            user=POSTGRES_USER, 
-                            password=POSTGRES_PASSWORD)
+        return psycopg2.connect(host=config.secrets.POSTGRES_HOST, 
+                            database=config.secrets.POSTGRES_DATABASE, 
+                            user=config.secrets.POSTGRES_USER, 
+                            password=config.secrets.POSTGRES_PASSWORD)
     
 
     def insert_data(conn, data_values, data):
@@ -64,4 +53,21 @@ class Postgres:
 
         cur.close()
         return True
+    
+    def get_aws_access_keys(conn, username):
+        cur = conn.cursor()
+        cur.execute("SELECT awskeyID, awskeySecret, awsRegion FROM users WHERE username = %s;", (username,))
+        result = cur.fetchone()
+
+        if result and all(result):
+            cur.close()
+            return {
+                "AWS_ACCESS_KEY_ID":result[0],
+                "AWS_SECRET_ACCESS_KEY":result[1],
+                "AWS_REGION":result[2]
+            }, False
+        
+        cur.close()
+        return None, True
+        
     

@@ -1,14 +1,19 @@
 from utils.postgres import *
 from utils.aws import *
 from utils.utils import *
+import config.secrets
 
+# establish connection with PostgreSQL database
+conn = Postgres.create_connection()
+
+# set access keys for AWS
+keys, empty = Postgres.get_aws_access_keys(conn, config.secrets.USERNAME)
+if not empty:
+    set_aws_access_keys(keys)
 
 # establish connection with cloudwatch and ec2      
 cloudwatch = Cloudwatch_Client()
 ec2 = EC2_Client()
-
-# establish connection with PostgreSQL database
-conn = Postgres.create_connection()
 
 if __name__ == "__main__":
     print("Collecting new metrics!")

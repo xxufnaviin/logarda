@@ -1,12 +1,8 @@
 # utility helper functions to abstract and moudlarize code
 import re
-
-# list of services to monitor for errors
-MONITORED_SERVICES = ["EC2", "S3", "LAMBDA", "IAM", "STS", "RDS", "VPC", "ECS", "EKS", "SQS", "SNS", 
-                       "API_GATEWAY", "CLOUDFORMATION", "CLOUDWATCH", "GUARDDUTY", "CONFIG", "ELB", 
-                       "AUTOSCALING", "DYNAMODB", "KMS", "SECRETS_MANAGER", "GLUE", "LAKEFORMATION", 
-                       "ATHENA", "REDSHIFT", "EMR", "KINESIS", "FIREHOSE", "STEP_FUNCTIONS", "EVENTBRIDGE", 
-                       "CODEBUILD", "CODEPIPELINE", "CODEDEPLOY","CODEARTIFACT"]
+import base64
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import config.secrets
 
 def generate_metric_values(timestamp, metrics_data, instance):
     # database schema for table "metrics"
@@ -40,3 +36,27 @@ def generate_error_values(error_events):
 # extract service from event source
 def extract_service(eventSource):
     return re.findall(r'[a-z0-9]*\.',eventSource)[0].strip(".").upper()
+
+
+def decrypt(ciphertext_b64: str, key: bytes) -> str:
+    data = base64.b64decode(ciphertext_b64)
+
+    # Go format: nonce + ciphertext + tag (all together)
+    nonce_size = 12  # GCM standard nonce size in Go
+
+    nonce = data[:nonce_size]
+    ciphertext = data[nonce_size:]
+
+    aesgcm = AESGCM(key)
+    plaintext = aesgcm.decrypt(nonce, ciphertext, None)
+
+    return plaintext.decode()
+
+
+def set_aws_access_keys(keys):
+    config.secrets.AWS_ACCESS_KEY_ID = decrypt(keys["AWS_ACCESS_KEY_ID"], config.secrets.ENCRYPTION_KEY)
+    config.secrets.AWS_SECRET_ACCESS_KEY = decrypt(keys["AWS_SECRET_ACCESS_KEY"], config.secrets.ENCRYPTION_KEY)
+    config.secrets.AWS_REGION = keys["AWS_REGION"]
+
+
+    
