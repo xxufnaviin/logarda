@@ -7,7 +7,7 @@ users = Postgres.get_all_users(conn)
 
 if __name__== "__main__":
     if users:
-        for username in users:
+        for username in users: # for all users
             print(f"Collecting data for: {username}")
             metrics_collector(username)
             logs_collector(username)
