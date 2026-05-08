@@ -16,7 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+      - run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+          
       - run: | 
           cat << EOF > logarda.pem
           ${{ secrets.RSA_KEY }}
