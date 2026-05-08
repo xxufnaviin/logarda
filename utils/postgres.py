@@ -54,6 +54,19 @@ class Postgres:
         cur.close()
         return True
     
+    def get_all_users(conn):
+        cur = conn.cursor()
+        cur.execute("SELECT username from users WHERE collector_on = %s;", (True,))
+        results = cur.fetchall()
+
+        if results:
+            cur.close()
+            return [result[0] for result in results]
+            
+        
+        cur.close()
+        return None
+    
     def get_aws_access_keys(conn, username):
         cur = conn.cursor()
         cur.execute("SELECT awskeyID, awskeySecret, awsRegion FROM users WHERE username = %s;", (username,))

@@ -27,3 +27,12 @@ CREATE TABLE logs (
     
     PRIMARY KEY (eventTime, errorCode, errorMessage) --composite primary keys to prevent double entries at same timestamp for same error code + error message
 );
+
+CREATE TABLE users (
+    username VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    awskeyid VARCHAR,
+    awskeysecret VARCHAR,
+    awsregion VARCHAR,
+    collector_on BOOLEAN DEFAULT false
+);

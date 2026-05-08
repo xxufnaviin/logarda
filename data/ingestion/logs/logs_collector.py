@@ -1,23 +1,26 @@
+import argparse
 from utils.postgres import *
 from utils.aws import *
 from utils.redis import *
 from utils.utils import *
 from config.variables import *
-import config.secrets
 
-# establish connection with PostgreSQL database and Redis
-conn = Postgres.create_connection()
-r = Redis.create_connection()
+def logs_collector(username):
+    # establish connection with PostgreSQL database and Redis
+    conn = Postgres.create_connection()
+    r = Redis.create_connection()
 
-# set access keys for AWS
-keys, empty = Postgres.get_aws_access_keys(conn, config.secrets.USERNAME)
-if not empty:
+    # set access keys for AWS
+    keys, empty = Postgres.get_aws_access_keys(conn, username)
+    if empty:
+        print("No AWS credentials found for account.")
+        return
     set_aws_access_keys(keys)
 
-# establish connection with cloudtrail
-cloudtrail = Cloudtrail_Client()
+    # establish connection with cloudtrail
+    cloudtrail = Cloudtrail_Client()
 
-if __name__ == "__main__":
+
     print("Checking for errors!")
     # insert error only logs into database
     error_events, data_exists = cloudtrail.get_error_events()
@@ -44,5 +47,13 @@ if __name__ == "__main__":
     else:
         print("No error events for the past 15 minutes!")
         pass
-    
+
     conn.close()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--username", required=True)
+
+    args = parser.parse_args()
+
+    logs_collector(args.username)

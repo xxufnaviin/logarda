@@ -1,0 +1,23 @@
+name: Metrics/Logs Ingestion
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - data/ingestion/**
+
+jobs:
+  deploy:
+    env:
+      EC2_HOST: ${{ vars.EC2_HOST }}
+      EC2_USER: ${{ vars.EC2_USER }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo ${{ secrets.RSA_KEY }} > logarda.pem # custom create .pem file
+
+      - run: chmod 600 logarda.pem # enforce strict permission
+
+      - run: chmod +x scripts/deploy_ingestion.sh 
+      - run: scripts/deploy_ingestion.sh 
