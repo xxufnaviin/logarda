@@ -23,11 +23,11 @@ jobs:
       - run: |
           cat << EOF > config/.env
           ${{ secrets.ENV }}
-          EOF 
+        EOF 
       - run: |           
           cat << EOF > logarda.pem
           ${{ secrets.RSA_KEY }}
-          EOF 
+        EOF 
 
       - run: chmod 600 logarda.pem # enforce strict permission
 
