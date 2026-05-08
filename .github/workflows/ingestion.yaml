@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - data/ingestion/**
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -15,7 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo ${{ secrets.RSA_KEY }} > logarda.pem # custom create .pem file
+      - run: | 
+          cat << EOF > logarda.pem
+          ${{ secrets.RSA_KEY }}
+          EOF 
 
       - run: chmod 600 logarda.pem # enforce strict permission
 
