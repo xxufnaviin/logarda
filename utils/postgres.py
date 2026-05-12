@@ -18,8 +18,8 @@ class Postgres:
         if data == "metrics":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO metrics (metricTime, instanceID, cpu, network, memory) VALUES (%s, %s, %s, %s, %s);", 
-                            (data_values['metricTime'],data_values['instanceID'],data_values['cpu'],data_values['network'],data_values['memory']))                
+                cur.execute("INSERT INTO metrics (metricTime, instanceID, cpu, network, memory, username) VALUES (%s, %s, %s, %s, %s);", 
+                            (data_values['metricTime'],data_values['instanceID'],data_values['cpu'],data_values['network'],data_values['memory'], data_values['username']))                
                 # commit changes
                 conn.commit()     
              
@@ -30,12 +30,20 @@ class Postgres:
                 
                 cur.close()
                 return False
+            
+            # catch errors when foreign key is violated
+            except errors.ForeignKeyViolation:
+                conn.rollback()
+                print(f"Username does not exist in system {data_values['username']}")
+                
+                cur.close()
+                return False
 
         elif data == "logs":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO logs (eventTime, errorCode, errorMessage, serviceName, eventName) VALUES (%s, %s, %s, %s, %s);", 
-                            (data_values['eventTime'],data_values['errorCode'],data_values['errorMessage'],data_values['serviceName'],data_values['eventName']))                
+                cur.execute("INSERT INTO logs (eventTime, errorCode, errorMessage, serviceName, eventName, username) VALUES (%s, %s, %s, %s, %s);", 
+                            (data_values['eventTime'],data_values['errorCode'],data_values['errorMessage'],data_values['serviceName'],data_values['eventName'],data_values['username']))                
                 # commit changes
                 conn.commit()            
 
@@ -44,6 +52,14 @@ class Postgres:
                 print(f"Data exist in logs table for error code - {data_values['errorCode']} and error message - {data_values['errorMessage']} at {data_values['eventTime']}")
                 conn.rollback()
 
+                cur.close()
+                return False
+            
+            # catch errors when foreign key is violated
+            except errors.ForeignKeyViolation:
+                conn.rollback()
+                print(f"Username does not exist in system {data_values['username']}")
+                
                 cur.close()
                 return False
         else:

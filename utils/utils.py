@@ -4,7 +4,7 @@ import base64
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import config.secrets
 
-def generate_metric_values(timestamp, metrics_data, instance):
+def generate_metric_values(timestamp, metrics_data, instance, username):
     # database schema for table "metrics"
     metricTime = timestamp
     instanceID = instance
@@ -16,10 +16,11 @@ def generate_metric_values(timestamp, metrics_data, instance):
             "instanceID": instanceID,
             "cpu": cpu,
             "network": network, 
-            "memory": memory }
+            "memory": memory,
+            "username": username}
     
 
-def generate_error_values(error_events):
+def generate_error_values(error_events, username):
     # database schema for table "logs"
     eventTime = error_events["eventTime"]
     errorCode = error_events["errorCode"]
@@ -31,7 +32,8 @@ def generate_error_values(error_events):
             "errorCode": errorCode,
             "errorMessage": errorMessage,
             "serviceName": serviceName, 
-            "eventName": eventName }, serviceName
+            "eventName": eventName, 
+            "username": username}, serviceName
 
 # extract service from event source
 def extract_service(eventSource):
