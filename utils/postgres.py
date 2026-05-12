@@ -18,7 +18,7 @@ class Postgres:
         if data == "metrics":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO metrics (metricTime, instanceID, cpu, network, memory, username) VALUES (%s, %s, %s, %s, %s);", 
+                cur.execute("INSERT INTO metrics (metricTime, instanceID, cpu, network, memory, username) VALUES (%s, %s, %s, %s, %s, %s);", 
                             (data_values['metricTime'],data_values['instanceID'],data_values['cpu'],data_values['network'],data_values['memory'], data_values['username']))                
                 # commit changes
                 conn.commit()     
@@ -42,7 +42,7 @@ class Postgres:
         elif data == "logs":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO logs (eventTime, errorCode, errorMessage, serviceName, eventName, username) VALUES (%s, %s, %s, %s, %s);", 
+                cur.execute("INSERT INTO logs (eventTime, errorCode, errorMessage, serviceName, eventName, username) VALUES (%s, %s, %s, %s, %s, %s);", 
                             (data_values['eventTime'],data_values['errorCode'],data_values['errorMessage'],data_values['serviceName'],data_values['eventName'],data_values['username']))                
                 # commit changes
                 conn.commit()            
