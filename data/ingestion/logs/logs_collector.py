@@ -6,7 +6,7 @@ from utils.utils import *
 from config.variables import *
 
 def logs_collector(username):
-    # establish connection with PostgreSQL database and Redis
+    # establish connection with PostgreSQL database and Redis 
     conn = Postgres.create_connection()
     r = Redis.create_connection()
 

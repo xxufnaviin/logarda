@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - data/ingestion/**
+      - utils/**
+      - config/**
+
   workflow_dispatch:
 
 jobs:
