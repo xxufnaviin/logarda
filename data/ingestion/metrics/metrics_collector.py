@@ -27,7 +27,7 @@ def metrics_collector(username):
         if data_exists:
             for timestamp in metrics_data:
                 # generate values for each field
-                metric_values = generate_metric_values(timestamp, metrics_data, instance)
+                metric_values = generate_metric_values(timestamp, metrics_data, instance, username)
 
                 # insert into database one row at a time
                 Postgres.insert_data(conn, metric_values, data="metrics")

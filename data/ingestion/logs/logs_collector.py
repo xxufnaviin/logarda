@@ -28,7 +28,7 @@ def logs_collector(username):
     if data_exists:
         for events in error_events:
             # generate values for each field
-            error_values, service = generate_error_values(events)
+            error_values, service = generate_error_values(events, username)
 
             # insert into database one row at a time if error is relevant
             if service in MONITORED_SERVICES:                
