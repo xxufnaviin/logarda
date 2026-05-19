@@ -12,21 +12,41 @@ on:
 
 jobs:
   deploy:
-    env:
-      EC2_HOST: ${{ vars.EC2_HOST }}
-      EC2_USER: ${{ vars.EC2_USER }}
-
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+      - uses: actions/checkout@v4 #checkout code
+      
+      - uses: aws-actions/configure-aws-credentials@v4 # set credentials
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-      - run: printf "%s" "${{ secrets.ENV }}" > config/.env
-      - run: printf "%s" "${{ secrets.RSA_KEY }}" > logarda.pem
+      - uses: aws-actions/amazon-ecr-login@v2 # login to registry
 
-      - run: chmod 600 logarda.pem # enforce strict permission
+      - run: docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY }}:latest -f data/ingestion/Dockerfile . # build image
+      - run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY }}:latest # push image
+  
+  # update:
+  #   needs: deploy
+  #   env:
+  #     EC2_HOST: ${{ vars.EC2_HOST }}
+  #     EC2_USER: ${{ vars.EC2_USER }}
 
-      - run: chmod +x scripts/deploy_ingestion.sh 
-      - run: scripts/deploy_ingestion.sh 
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4 #checkout code
+
+  #     - run: |
+  #         mkdir -p ~/.ssh
+  #         ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+  #     - run: printf "%s" "${{ secrets.ENV }}" > config/.env
+  #     - run: printf "%s" "${{ secrets.RSA_KEY }}" > logarda.pem
+
+  #     - run: chmod 600 logarda.pem # enforce strict permission 
+
+  #     - run: chmod +x scripts/deploy_ingestion.sh
+  #     - run: scripts/deploy_ingestion.sh
+
+

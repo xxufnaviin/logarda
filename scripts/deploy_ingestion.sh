@@ -1,10 +1,11 @@
 # run from root
-# take collectors folder into ec2 instance and execute schedule_collectors.sh
+# take env and place it in ec2
 
-scp -r -i "logarda.pem" data/ingestion $EC2_USER@$EC2_HOST:/home/$EC2_USER
-scp -r -i "logarda.pem" ./utils $EC2_USER@$EC2_HOST:/home/$EC2_USER/ingestion 
-scp -r -i "logarda.pem" ./config $EC2_USER@$EC2_HOST:/home/$EC2_USER/ingestion 
+scp -r -i "logarda.pem" config/.env $EC2_USER@$EC2_HOST:/home/$EC2_USER/config
 
+# pull the latest docker image into the repo
+# add cron jobs to run containers and remove them after done
 ssh -i "logarda.pem" $EC2_USER@$EC2_HOST << 'EOF'
-cd ingestion/ && chmod +x schedule_collectors.sh && ./schedule_collectors.sh 
+docker pull repo:latest
+(echo "*/15 * * * * /usr/bin/docker run --env-file /home/ubuntu/ingestion/config/.env --rm collector:latest main.py") | crontab -
 EOF

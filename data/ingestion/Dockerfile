@@ -4,7 +4,9 @@ WORKDIR /ingestion
 
 ENV PYTHONPATH=".:./logs:./metrics:$PYTHONPATH" 
 
-COPY . .
+COPY ./data/ingestion/ .
+COPY ./utils ./utils
+COPY ./config ./config
 
 RUN pip install --no-cache-dir -r ./requirements.txt
 
