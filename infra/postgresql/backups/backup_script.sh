@@ -1,0 +1,1 @@
+ pg_dump -h $POSTGRES_HOST -p 5432 -U $POSTGRES_USER -d $POSTGRES_DATABASE -f backup_aws.sql
