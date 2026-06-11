@@ -1,10 +1,12 @@
 import psycopg2
 from psycopg2 import errors
 import config.secrets 
+from config.variables import * 
+
 
 
 # only used as namespace for module, not OOP
-class Postgres:
+class Postgres:    
     def create_connection():
         return psycopg2.connect(host=config.secrets.POSTGRES_HOST, 
                             database=config.secrets.POSTGRES_DATABASE, 
@@ -15,10 +17,13 @@ class Postgres:
     def insert_data(conn, data_values, data):
         cur = conn.cursor()
 
+        query_metrics = f"INSERT INTO {Postgres.metrics_table} (metricTime, instanceID, cpu, network, memory, username) VALUES (%s, %s, %s, %s, %s, %s);"
+        query_logs = f"INSERT INTO {Postgres.logs_table} (eventTime, errorCode, errorMessage, serviceName, eventName, username) VALUES (%s, %s, %s, %s, %s, %s);"
+
         if data == "metrics":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO metrics (metricTime, instanceID, cpu, network, memory, username) VALUES (%s, %s, %s, %s, %s, %s);", 
+                cur.execute(query_metrics,
                             (data_values['metricTime'],data_values['instanceID'],data_values['cpu'],data_values['network'],data_values['memory'], data_values['username']))                
                 # commit changes
                 conn.commit()     
@@ -42,7 +47,7 @@ class Postgres:
         elif data == "logs":
             # try inserting values into database
             try:
-                cur.execute("INSERT INTO logs (eventTime, errorCode, errorMessage, serviceName, eventName, username) VALUES (%s, %s, %s, %s, %s, %s);", 
+                cur.execute(query_logs, 
                             (data_values['eventTime'],data_values['errorCode'],data_values['errorMessage'],data_values['serviceName'],data_values['eventName'],data_values['username']))                
                 # commit changes
                 conn.commit()            
@@ -72,7 +77,8 @@ class Postgres:
     
     def get_all_users(conn):
         cur = conn.cursor()
-        cur.execute("SELECT username from users WHERE collector_on = %s;", (True,))
+        query = f"SELECT username from {Postgres.user_table} WHERE collector_on = %s;"
+        cur.execute(query, (True,))
         results = cur.fetchall()
 
         if results:
@@ -85,7 +91,8 @@ class Postgres:
     
     def get_aws_access_keys(conn, username):
         cur = conn.cursor()
-        cur.execute("SELECT awskeyID, awskeySecret, awsRegion FROM users WHERE username = %s;", (username,))
+        query = f"SELECT awskeyID, awskeySecret, awsRegion FROM {Postgres.user_table} WHERE username = %s;"
+        cur.execute(query, (username,))
         result = cur.fetchone()
 
         if result and all(result):
@@ -98,5 +105,17 @@ class Postgres:
         
         cur.close()
         return None, True
+    
+    def set_env_tables():
+        if config.secrets.ENVIRONMENT == "PRD":
+            print("Production")
+            Postgres.metrics_table = PRD_METRICS_TABLE
+            Postgres.logs_table = PRD_LOGS_TABLE
+            Postgres.user_table = PRD_USERS_TABLE
+        else:
+            print("Staging")
+            Postgres.metrics_table = STG_METRICS_TABLE
+            Postgres.logs_table = STG_LOGS_TABLE
+            Postgres.user_table = STG_USERS_TABLE
         
     

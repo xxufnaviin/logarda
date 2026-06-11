@@ -1,6 +1,8 @@
 from utils.postgres import *
 from logs.logs_collector import logs_collector
-from metrics.metrics_collector import metrics_collector
+from metrics.metrics_collector import metrics_collector 
+
+Postgres.set_env_tables()
 
 conn = Postgres.create_connection()
 users = Postgres.get_all_users(conn)

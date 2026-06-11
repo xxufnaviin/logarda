@@ -1,0 +1,1 @@
+ pg_dump -h 54.179.136.16 -p 5432 -U postgres -d awsmetrics -f backup_aws.sql

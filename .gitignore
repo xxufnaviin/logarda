@@ -4,4 +4,4 @@
 *.env
 *.envrc
 __pycache__/
-
+*.ipynb
