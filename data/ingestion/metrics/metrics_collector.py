@@ -2,10 +2,17 @@ import argparse
 from utils.postgres import *
 from utils.aws import *
 from utils.utils import *
+from utils.redis import *
 
 def metrics_collector(username):
-    # establish connection with PostgreSQL database
+    # establish connection with PostgreSQL database and redis
     conn = Postgres.create_connection()
+    r = Redis.create_connection()
+
+    if config.secrets.ENVIRONMENT == "PRD":
+        METRICS_STREAM = "metrics"
+    else:
+        METRICS_STREAM = "stg_metrics"
 
     # set access keys for AWS
     keys, empty = Postgres.get_aws_access_keys(conn, username)
@@ -31,6 +38,11 @@ def metrics_collector(username):
 
                 # insert into database one row at a time
                 Postgres.insert_data(conn, metric_values, data="metrics")
+
+                redis_metrics = generate_metric_values(timestamp, metrics_data, instance, username)
+                redis_metrics["metricTime"] = redis_metrics["metricTime"].isoformat()
+                # enqueue metrics into redis 
+                Redis.enqueue_message(r, METRICS_STREAM, redis_metrics)
         else:
             pass
 

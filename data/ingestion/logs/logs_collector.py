@@ -10,6 +10,11 @@ def logs_collector(username):
     conn = Postgres.create_connection()
     r = Redis.create_connection()
 
+    if config.secrets.ENVIRONMENT == "PRD":
+        ERROR_QUEUE = "error_messages"
+    else:
+        ERROR_QUEUE = "stg_error_messages"
+
     # set access keys for AWS
     keys, empty = Postgres.get_aws_access_keys(conn, username)
     if empty:
@@ -35,7 +40,7 @@ def logs_collector(username):
                 # check if value if succeed in inserting value into database, only enqueue redis if success
                 if Postgres.insert_data(conn, error_values, data="logs"):
                     # enqueue errors into redis 
-                    Redis.enqueue_message(r, "error_messages", error_values)
+                    Redis.enqueue_message(r, ERROR_QUEUE, error_values)
                     
                 else:
                     print("Duplicate errors will not be enqueued to Redis!")
