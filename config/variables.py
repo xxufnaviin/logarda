@@ -15,6 +15,9 @@ STG_METRICS_TABLE = 'stg_metrics'
 STG_LOGS_TABLE = "stg_logs"
 STG_USERS_TABLE = 'stg_users'
 
+# preprocessing
+TIMESTAMP = "metrictime"
+
 
 
 

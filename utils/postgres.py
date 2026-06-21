@@ -1,7 +1,8 @@
 import psycopg2
 from psycopg2 import errors
 import config.secrets 
-from config.variables import * 
+from config.variables import *
+from sqlalchemy import create_engine 
 
 
 
@@ -13,6 +14,8 @@ class Postgres:
                             user=config.secrets.POSTGRES_USER, 
                             password=config.secrets.POSTGRES_PASSWORD)
     
+    def create_engine():
+        return create_engine(config.secrets.DATABASE)
 
     def insert_data(conn, data_values, data):
         cur = conn.cursor()
