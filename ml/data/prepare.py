@@ -1,5 +1,5 @@
-from load import *
-from pipeline import *
+from ml.data.load import *
+from ml.data.pipeline import *
 
 
 def prepare_data(data_type:str, username = None):
