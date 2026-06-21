@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 from config.secrets import *
 
-from preprocessing.feature_scaling import feature_scale_data, feature_scale_dataset
-from preprocessing.data_split import train_val_test_split
-from preprocessing.clean_dataset import clean_dataset
-from preprocessing.data_transformation import preprocess_data, preprocess_dataset
+from ml.data.preprocessing.feature_scaling import feature_scale_data, feature_scale_dataset
+from ml.data.preprocessing.data_split import train_val_test_split
+from ml.data.preprocessing.clean_dataset import clean_dataset
+from ml.data.preprocessing.data_transformation import preprocess_data, preprocess_dataset
 
 import warnings
 

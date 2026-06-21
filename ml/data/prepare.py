@@ -9,11 +9,15 @@ def prepare_data(data_type:str, username = None):
 
         print(df_train.head(5))
 
+        return df_train, df_validate, df_test
+
     elif data_type == "predict":
-        df = load_data(data_type,"xxufnaviin")
+        df = load_data(data_type,username)
         df_predict = processing_pipeline(df, data_type)
-    
+
         print(df_predict)
 
+        return df_predict
 
-prepare_data("predict")
+
+# prepare_data("predict","xxufnaviin")
