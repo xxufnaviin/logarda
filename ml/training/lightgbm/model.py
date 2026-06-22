@@ -15,6 +15,7 @@ def train_and_save(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.D
     # save model
     save_model(model)
 
+    return list(X.columns)
 
 def train_model(X, y):
     lgb_memory = lgb.LGBMRegressor()

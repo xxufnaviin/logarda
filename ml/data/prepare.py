@@ -7,17 +7,15 @@ def prepare_data(data_type:str, username = None):
         df = load_data(data_type)
         df_train, df_validate, df_test = processing_pipeline(df, data_type)
 
-        print(df_train.head(5))
-
         return df_train, df_validate, df_test
 
     elif data_type == "predict":
         df = load_data(data_type,username)
+        df_original = df.copy()
+        
         df_predict = processing_pipeline(df, data_type)
 
-        print(df_predict)
-
-        return df_predict
+        return df_original, df_predict
 
 
 # prepare_data("predict","xxufnaviin")

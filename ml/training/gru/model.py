@@ -10,13 +10,15 @@ def train_and_save(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.D
     tf.keras.utils.set_random_seed(89)
 
     # split dataset into neural network based time series dataset
-    train_dataset, validate_dataset, test_dataset, feature_size = preprocess_data(df_train, df_validate, df_test, remove_cols)
+    train_dataset, validate_dataset, feature_size, features = preprocess_data(df_train, df_validate, df_test, remove_cols)
 
     # train model
     model = train_model(train_dataset, validate_dataset, feature_size)
 
     # save model
     save_model(model)
+
+    return features
 
 
 def train_model(train_dataset, validate_dataset, feature_size):

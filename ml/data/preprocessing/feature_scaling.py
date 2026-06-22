@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 def feature_scale_dataset(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.DataFrame):
-    df_train, df_validate, df_test = label_encode_dataset(df_train, df_validate, df_test)
+    # df_train, df_validate, df_test = label_encode_dataset(df_train, df_validate, df_test)
     df_train, df_validate, df_test = onehot_encode_dataset(df_train, df_validate, df_test)
     df_train, df_validate, df_test = logarize_dataset(df_train, df_validate, df_test)
     df_train, df_validate, df_test = standardize_dataset(df_train, df_validate, df_test)
@@ -13,7 +13,7 @@ def feature_scale_dataset(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_te
 
 ## for prediction pipeline
 def feature_scale_data(df_predict:pd.DataFrame):
-    df_predict = label_encode_data(df_predict)
+    # df_predict = label_encode_data(df_predict)
     df_predict = onehot_encode_data(df_predict)
     df_predict = logarize_data(df_predict)
     df_predict = standardize_data(df_predict)
@@ -159,7 +159,9 @@ def standardize_data(df_predict:pd.DataFrame):
 
 # utils function
 def get_excluded_features_standarization(df_train:pd.DataFrame):
-    return list(df_train.select_dtypes(exclude=np.number).columns) + ["target_cpu", "target_memory", "target_network", "instance_group"]
+    exclude = list(df_train.select_dtypes(exclude=np.number).columns)
+    exclude.remove("instance_group")
+    return exclude + ["target_cpu", "target_memory", "target_network", "instance_group"]
 
 def get_numerical_features(df_train:pd.DataFrame):
     df_numerical_train_test = list(df_train.select_dtypes(include=np.number).columns) 
@@ -167,6 +169,6 @@ def get_numerical_features(df_train:pd.DataFrame):
     df_numerical_train_test.remove("day")
     df_numerical_train_test.remove("day_of_week")
     df_numerical_train_test.remove("minute")
-    df_numerical_train_test.remove("instance_group")
+    # df_numerical_train_test.remove("instance_group")
 
     return df_numerical_train_test

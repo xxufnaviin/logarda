@@ -19,10 +19,10 @@ def preprocess_data(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.
     test_data = df_test[dl_columns].values
     validate_data = df_validate[dl_columns].values
     
-    return create_nn_dataset(train_data, validate_data, test_data, feature_size)
+    return create_nn_dataset(train_data, validate_data, test_data, feature_size, dl_columns)
 
 
-def create_nn_dataset(train_data, validate_data, test_data, feature_size):
+def create_nn_dataset(train_data, validate_data, test_data, feature_size, columns):
     lookback = 12 # how many steps to look back, 12 for 5-minute itnervals is 1 hour roughly
 
     # split data, for features use all
@@ -50,14 +50,7 @@ def create_nn_dataset(train_data, validate_data, test_data, feature_size):
     sequence_length=lookback,
     batch_size=32
     )
-
-    test_dataset = timeseries_dataset_from_array(
-        data=test_X,
-        targets=test_y,
-        sequence_length=lookback,
-        batch_size=32
-    )
-
+    
     validate_dataset = timeseries_dataset_from_array(
         data=validate_X,
         targets=validate_y,
@@ -65,4 +58,4 @@ def create_nn_dataset(train_data, validate_data, test_data, feature_size):
         batch_size=32
     )
 
-    return train_dataset, validate_dataset, test_dataset, feature_size
+    return train_dataset, validate_dataset, feature_size, columns
