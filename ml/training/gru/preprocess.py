@@ -19,8 +19,6 @@ def preprocess_data(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.
     test_data = df_test[dl_columns].values
     validate_data = df_validate[dl_columns].values
     
-    print(df_train[dl_columns].head(5))
-    print(train_data)
     return create_nn_dataset(train_data, validate_data, test_data, feature_size)
 
 

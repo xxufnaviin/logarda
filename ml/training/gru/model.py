@@ -21,18 +21,24 @@ def train_and_save(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.D
 
 def train_model(train_dataset, validate_dataset, feature_size):
     model_gru = Sequential([
-        GRU(32, input_shape=(12, feature_size)),
-        Dense(32),
+        GRU(64, input_shape=(12, feature_size), return_sequences=True),
+        GRU(64, input_shape=(12, feature_size), return_sequences=False),
+        Dense(16),
         Dense(3)
     ])
 
     model_gru.compile(
-        optimizer = 'adam',
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001),
         loss=tf.keras.losses.LogCosh(),
         metrics=['mae']
     )
+    early_stop = tf.keras.callbacks.EarlyStopping(
+        monitor="val_loss",
+        patience=5,
+        restore_best_weights=True
+    )
 
-    model_gru.fit(train_dataset,validation_data=validate_dataset, epochs=30)
+    model_gru.fit(train_dataset,validation_data=validate_dataset, callbacks=[early_stop], epochs=30)
 
     return model_gru
 

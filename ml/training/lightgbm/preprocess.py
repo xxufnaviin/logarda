@@ -11,8 +11,6 @@ def preprocess_data(df_train:pd.DataFrame, columns_to_remove):
     # train data targets
     y_train_memory = df_train["target_memory"]
 
-    print(X_train.head(5))
-
     return X_train, y_train_memory
 
 
