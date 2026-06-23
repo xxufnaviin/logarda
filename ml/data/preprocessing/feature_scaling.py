@@ -4,8 +4,6 @@ import pandas as pd
 import numpy as np
 
 def feature_scale_dataset(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.DataFrame):
-    # df_train, df_validate, df_test = label_encode_dataset(df_train, df_validate, df_test)
-    df_train, df_validate, df_test = onehot_encode_dataset(df_train, df_validate, df_test)
     df_train, df_validate, df_test = logarize_dataset(df_train, df_validate, df_test)
     df_train, df_validate, df_test = standardize_dataset(df_train, df_validate, df_test)
     
@@ -13,8 +11,6 @@ def feature_scale_dataset(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_te
 
 ## for prediction pipeline
 def feature_scale_data(df_predict:pd.DataFrame):
-    # df_predict = label_encode_data(df_predict)
-    df_predict = onehot_encode_data(df_predict)
     df_predict = logarize_data(df_predict)
     df_predict = standardize_data(df_predict)
 

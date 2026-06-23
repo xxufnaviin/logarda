@@ -1,13 +1,6 @@
 # not endpoint, modular functions just to expose the models
 from ml.data.prepare import prepare_data
 
-
-import joblib
-
-le = joblib.load("ml/artifacts/scalers/label_encoder.pkl")
-
-
-
 def predict(username:str):
     df_original, df_predict = prepare_data("predict", username)
 

@@ -2,7 +2,7 @@ import pandas as pd
 import lightgbm as lgb
 
 def preprocess_data(df_train:pd.DataFrame, columns_to_remove):
-    X = [x for x in df_train.columns if "target" not in x]
+    X = [x for x in df_train.columns if "target" not in x and "instance" not in x]
 
     # train data features
     X_train = df_train[X]
@@ -15,7 +15,7 @@ def preprocess_data(df_train:pd.DataFrame, columns_to_remove):
 
 
 def get_low_feature_importance(df_train:pd.DataFrame):
-    X = [x for x in df_train.columns if "target" not in x]
+    X = [x for x in df_train.columns if "target" not in x and "instance" not in x]
 
     # train data features
     X_train = df_train[X]
