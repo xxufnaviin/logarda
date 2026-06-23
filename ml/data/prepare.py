@@ -10,12 +10,12 @@ def prepare_data(data_type:str, username = None):
         return df_train, df_validate, df_test
 
     elif data_type == "predict":
-        df = load_data(data_type,username)
-        df_original = df.copy()
-        
-        df_predict = processing_pipeline(df, data_type)
+        return load_data(data_type,username)
 
-        return df_original, df_predict
+def prepare_prediction_data(df_original:pd.DataFrame):
+    df = df_original.copy()
+    df_predict = processing_pipeline(df, "predict")
 
+    return df_predict 
 
 # prepare_data("predict","xxufnaviin")

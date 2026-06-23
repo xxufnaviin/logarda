@@ -1,14 +1,17 @@
 # not endpoint, modular functions just to expose the models
-from ml.data.prepare import prepare_data
+from ml.data.prepare import prepare_data, prepare_prediction_data
+from ml.inference.gru.model import gru_predict
 
 def predict(username:str):
-    df_original, df_predict = prepare_data("predict", username)
+    df_original = prepare_data("predict", username)
 
-    # print(df_original)
-    print(df_predict)
-    for instance_group, df_instance in df_predict.groupby("instance_group"):
+    
+    print(df_original)
+    for instance_group, df_instance in df_original.groupby("instanceid"):
         print(instance_group)
-        print(df_instance.tail(12)) # get last 12 values for neural network
+
+        gru_predict(df_instance)
+        break
 
     # add logic to iterate through each instance and predict 13 data points (minus one since og data has it)
     # then concat back to the dataframe by adding time (5 min interval) and its values
