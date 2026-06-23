@@ -15,7 +15,6 @@ def inverse_transform(results):
     return results
 
 def create_predicted_row(results, time):
-    print(results[0])
     results = inverse_transform(results)
     row = {
         "metrictime": time,
@@ -26,7 +25,6 @@ def create_predicted_row(results, time):
         "username": pd.NA
 
     }
-    print(results[0])
     return pd.DataFrame([row])
 
 

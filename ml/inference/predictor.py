@@ -3,15 +3,13 @@ from ml.data.prepare import prepare_data, prepare_prediction_data
 from ml.inference.gru.model import gru_predict
 
 def predict(username:str):
-    df_original = prepare_data("predict", username)
+    data = prepare_data("predict", username)
+    print(data)
+    for instance, instance_data in data.groupby("instanceid"):
+        print("Predicting for:", instance, " by:", username)
 
-    
-    print(df_original)
-    for instance_group, df_instance in df_original.groupby("instanceid"):
-        print(instance_group)
-
-        gru_predict(df_instance)
-        break
+        results = gru_predict(instance_data)
+        
 
     # add logic to iterate through each instance and predict 13 data points (minus one since og data has it)
     # then concat back to the dataframe by adding time (5 min interval) and its values

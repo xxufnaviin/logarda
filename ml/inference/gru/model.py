@@ -38,11 +38,15 @@ def gru_predict(df_original:pd.DataFrame):
     predicted_dataframe['instanceid'] = df_original["instanceid"][0]
     predicted_dataframe['username'] = df_original["username"][0]
 
-    print(last_timestamp, predicted_timestamp)
-    print(predicted_dataframe[1:].reset_index(drop=True))
-    
     # should only return starting from 2nd row, since the first row already has actual value
-    return predicted_dataframe[1:].reset_index()
+    # but for feed forward prediction of data, need to include back at least five previous values
+    idx = df_original.index[df_original["metrictime"] == last_timestamp][0]
+    history = df_original.iloc[idx-1:idx+10].sort_values("metrictime")
+
+    results =  pd.concat([history, predicted_dataframe[1:]],ignore_index=True).reset_index(drop=True)
+
+    print(results)
+    return results
 
 
 
