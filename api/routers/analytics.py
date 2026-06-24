@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from datetime import datetime, timezone
 
 from utils.redis import *
 from ml.inference.predictor import predict
@@ -12,7 +13,7 @@ if config.secrets.ENVIRONMENT == "PRD":
 else:
     PREDICTED_METRICS_STREAM = "stg_predicted_metrics"
 
-@router.post("/predict")
+@router.get("/predict")
 def get_prediction(username: str, duration: int):
     if not username or not duration: 
         return { 
@@ -38,6 +39,7 @@ def get_prediction(username: str, duration: int):
 def push_predicted_metrics(results):
     for _, row in results.iterrows():
         message = row.to_dict()
+        message["metrictime"] = datetime.strptime(message["metrictime"].strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
         message["metrictime"] = message["metrictime"].isoformat()
 
         Redis.enqueue_message(r, PREDICTED_METRICS_STREAM, message)
