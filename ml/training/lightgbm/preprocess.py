@@ -3,7 +3,7 @@ import lightgbm as lgb
 
 def preprocess_data(df_train:pd.DataFrame, columns_to_remove):
     X = [x for x in df_train.columns if "target" not in x and "instance" not in x]
-
+ 
     # train data features
     X_train = df_train[X]
     X_train = X_train.drop(columns_to_remove, axis = 1)

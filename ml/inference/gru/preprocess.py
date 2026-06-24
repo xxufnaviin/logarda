@@ -12,6 +12,7 @@ def inverse_transform(results):
     results = scaler_y.inverse_transform(results)
     results = np.expm1(results)
     
+    print(results)
     return results
 
 def create_predicted_row(results, time):
@@ -31,7 +32,7 @@ def create_predicted_row(results, time):
 
 def preprocess_data(df_predict, features):
     predict_data = df_predict[features].values
-    print("prepocess",features)
+
     lookback = 12 # how many steps to look back, 12 for 5-minute itnervals is 1 hour roughly
 
     predict_X = predict_data

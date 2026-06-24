@@ -6,20 +6,21 @@ from datetime import datetime, timezone, timedelta
 from ml.inference.gru.preprocess import preprocess_data, create_predicted_row
 from ml.data.prepare import prepare_prediction_data
 
-def gru_predict(df_original:pd.DataFrame):
+def gru_predict(df_original:pd.DataFrame, hours:int):
     features = get_features()
     model = get_model()
 
     df_predict = prepare_prediction_data(df_original)
     last_timestamp = df_predict.index[-1]
     predicted_timestamp = last_timestamp + timedelta(minutes=5) # first predicted timestamp
+    horizon = hours * 12 + 2
 
     predicted_dataframe = pd.DataFrame()
 
-    for _ in range (14):
+    for _ in range (horizon):
         # create nn dataset
         df_predict = prepare_prediction_data(df_original)
-        # print(df_predict.tail(12))
+
         predict_dataset = preprocess_data(df_predict.tail(12), features)
         results = model.predict(predict_dataset) # make prediction
         
@@ -41,12 +42,12 @@ def gru_predict(df_original:pd.DataFrame):
     # should only return starting from 2nd row, since the first row already has actual value
     # but for feed forward prediction of data, need to include back at least five previous values
     idx = df_original.index[df_original["metrictime"] == last_timestamp][0]
-    history = df_original.iloc[idx-1:idx+10].sort_values("metrictime")
+    history = df_original.iloc[idx-1:idx+11].sort_values("metrictime")
 
     results =  pd.concat([history, predicted_dataframe[1:]],ignore_index=True).reset_index(drop=True)
 
-    print(results)
-    return results
+    # return results
+    return  predicted_dataframe[1:].reset_index(drop=True)
 
 
 
