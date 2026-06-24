@@ -3,8 +3,6 @@ import json
 
 import config.secrets 
 
-
-
 # only used as namespace for module, not OOP
 class Redis:
     def create_connection():
@@ -16,8 +14,6 @@ class Redis:
         # json dumps translates the dictionary into JSON formatted string to be unmarshalled at GO's backend
         r.lpush(queue_name, json.dumps(message))
 
-    # def dequeue_message(r:redis.Redis, queue_name):
-    #     print(r.rpop(queue_name))
         
     
     
