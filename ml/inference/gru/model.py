@@ -46,8 +46,11 @@ def gru_predict(df_original:pd.DataFrame, hours:int):
 
     results =  pd.concat([history, predicted_dataframe[1:]],ignore_index=True).reset_index(drop=True)
 
+    # shift all time by 5 minutes, since the target predicted is the next value of current timestamp
+    predicted_dataframe["metrictime"] = predicted_dataframe["metrictime"].apply(lambda x:x + timedelta(minutes=5))
+
     # return results
-    return  predicted_dataframe[1:].reset_index(drop=True)
+    return  predicted_dataframe[:13].reset_index(drop=True)
 
 
 

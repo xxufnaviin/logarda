@@ -6,3 +6,6 @@
 __pycache__/
 *.ipynb
 backup_*.sql
+*.pdf
+b09ad4a4-41df-4dc8-b962-361a52ad784a
+*.sqlite3
