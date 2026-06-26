@@ -2,7 +2,7 @@ from datetime import datetime, timezone, timedelta
 import pandas as pd
 
 def train_val_test_split(tsdf:pd.DataFrame):
-    current_date = datetime.now(timezone.utc).date() # get todays date in utc since data is in utc
+    current_date = pd.to_datetime("2026-06-21") # get train date
     split_date_test = current_date - timedelta(days=10)
     split_date_validate = split_date_test - timedelta(days=6)
 

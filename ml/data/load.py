@@ -7,7 +7,7 @@ def load_data(type:str, username = None):
 
     if type == "train":
         # select all metrics for training
-        df = pd.read_sql("SELECT * FROM metrics", engine)
+        df = pd.read_sql("SELECT * FROM metrics WHERE metrictime <= '2026-06-21'", engine)
 
     elif type == "predict":
         # select only last one hour of data for prediction
