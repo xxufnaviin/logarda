@@ -2,6 +2,7 @@
 from ml.data.prepare import prepare_data
 from ml.inference.gru.model import gru_predict
 from ml.inference.lightgbm.model import lgb_predict
+from ml.inference.linear.model import lr_predict
 
 def predict(username:str, hours:int):
     data = prepare_data("predict", username)
@@ -12,7 +13,7 @@ def predict(username:str, hours:int):
         print("Predicting for:", instance, " by:", username)
 
         results = gru_predict(instance_data, hours)
-        results = lgb_predict(instance_data, hours, results)
+        results = lr_predict(instance_data, hours, results)
         
         yield results, None
 

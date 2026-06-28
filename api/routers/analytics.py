@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from datetime import datetime, timezone
+import time
 
 from utils.redis import *
 from ml.inference.predictor import predict
@@ -29,6 +30,7 @@ def get_prediction(username: str, duration: int):
             }
         print(results)
         push_predicted_metrics(results)
+        # time.sleep(0.5)
     
     return {
         "message": "Prediction results have been pushed to message queue.",
@@ -41,5 +43,5 @@ def push_predicted_metrics(results):
         message = row.to_dict()
         message["metrictime"] = datetime.strptime(message["metrictime"].strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
         message["metrictime"] = message["metrictime"].isoformat()
-
+        print(message)
         Redis.enqueue_message(r, PREDICTED_METRICS_STREAM, message)
