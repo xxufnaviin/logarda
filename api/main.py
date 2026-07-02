@@ -1,9 +1,12 @@
 from fastapi import FastAPI
-from routers import analytics
 import uvicorn
+
+from routers import analytics
+from routers import performance
 
 analyticsAPI = FastAPI()
 analyticsAPI.include_router(analytics.router, prefix="/api/analytics")
+analyticsAPI.include_router(performance.router, prefix="/api/models")
 
 
 @analyticsAPI.get("/api")

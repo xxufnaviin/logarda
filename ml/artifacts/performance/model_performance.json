@@ -1,0 +1,222 @@
+{
+  "cpu": {
+    "ARIMA": {
+      "mae": 0.10,
+      "mse": 0.03,
+      "rmse": 0.18,
+      "mape": 15.06,
+      "smape": 14.10
+    },
+    "LinearRegression": {
+      "mae": 0.04,
+      "mse": 0.02,
+      "rmse": 0.13,
+      "mape": 5.10,
+      "smape": 5.28
+    },
+    "LightGBM": {
+      "mae": 0.04,
+      "mse": 0.02,
+      "rmse": 0.13,
+      "mape": 5.22,
+      "smape": 5.28
+    },
+    "GRU_32": {
+      "mae": 0.03,
+      "mse": 0.02,
+      "rmse": 0.13,
+      "mape": 3.45,
+      "smape": 3.75,
+      "params": {
+        "gru_units": 32,
+        "dense_units": 32,
+        "optimizer": "adam",
+        "loss": "logcosh"
+      }
+    },
+    "GRU_128_FE": {
+      "mae": 0.03,
+      "mse": 0.02,
+      "rmse": 0.13,
+      "mape": 3.31,
+      "smape": 3.63,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": true
+      }
+    },
+    "GRU_128_NoFE": {
+      "mae": 0.03,
+      "mse": 0.02,
+      "rmse": 0.13,
+      "mape": 3.43,
+      "smape": 3.74,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": false
+      }
+    }
+  },
+
+
+  "network": {
+    "ARIMA": {
+      "mae": 193773.26,
+      "mse": 190469804825.19,
+      "rmse": 436428.46,
+      "mape": 36.89,
+      "smape": 47.45
+    },
+    "LinearRegression": {
+      "mae": 72598.28,
+      "mse": 63229924557.80,
+      "rmse": 251455.61,
+      "mape": 25.78,
+      "smape": 21.11
+    },
+    "LightGBM": {
+      "mae": 41178.86,
+      "mse": 51815301250.94,
+      "rmse": 227629.75,
+      "mape": 15.42,
+      "smape": 14.93
+    },
+    "GRU_32": {
+      "mae": 47643.82,
+      "mse": 53907804160.00,
+      "rmse": 232180.55,
+      "mape": 13.22,
+      "smape": 13.89,
+      "params": {
+        "gru_units": 32,
+        "dense_units": 32,
+        "optimizer": "adam",
+        "loss": "logcosh"
+      }
+    },
+    "GRU_128_FE": {
+      "mae": 41945.75,
+      "mse": 53332013056.00,
+      "rmse": 230937.25,
+      "mape": 12.83,
+      "smape": 13.31,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": true
+      }
+    },
+    "GRU_128_NoFE": {
+      "mae": 46147.09,
+      "mse": 53521035264.00,
+      "rmse": 231346.14,
+      "mape": 13.15,
+      "smape": 13.81,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": false
+      }
+    }
+  },
+
+  
+  "memory": {
+    "ARIMA": {
+      "mae": 4.30,
+      "mse": 30.21,
+      "rmse": 5.50,
+      "mape": 11.92,
+      "smape": 10.85
+    },
+    "LinearRegression": {
+      "mae": 0.18,
+      "mse": 0.10,
+      "rmse": 0.32,
+      "mape": 0.47,
+      "smape": 0.46
+    },
+    "LightGBM": {
+      "mae": 0.28,
+      "mse": 0.32,
+      "rmse": 0.57,
+      "mape": 0.67,
+      "smape": 0.68
+    },
+    "GRU_32": {
+      "mae": 0.44,
+      "mse": 0.37,
+      "rmse": 0.61,
+      "mape": 1.14,
+      "smape": 1.13,
+      "params": {
+        "gru_units": 32,
+        "dense_units": 32,
+        "optimizer": "adam",
+        "loss": "logcosh"
+      }
+    },
+    "GRU_128_FE": {
+      "mae": 0.27,
+      "mse": 0.18,
+      "rmse": 0.42,
+      "mape": 0.68,
+      "smape": 0.68,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": true
+      }
+    },
+    "GRU_128_NoFE": {
+      "mae": 0.29,
+      "mse": 0.18,
+      "rmse": 0.43,
+      "mape": 0.74,
+      "smape": 0.74,
+      "params": {
+        "gru_units": 128,
+        "dense_units": 32,
+        "lr": 0.0003,
+        "optimizer": "adam",
+        "loss": "logcosh",
+        "feature_engineering": false
+      }
+    }
+  },
+
+  "overall": {
+    "weighted_smape": {
+      "weights": {
+        "cpu": 0.20,
+        "network": 0.35,
+        "memory": 0.45
+      },
+      "ARIMA": 24.30,
+      "LinearRegression": 8.64,
+      "LightGBM": 6.60,
+      "GRU_32": 6.12,
+      "GRU_128_FE": 5.66,
+      "GRU_128_NoFE": 5.91
+    }
+  },
+
+  "best_model": "GRU_128_FE"
+}

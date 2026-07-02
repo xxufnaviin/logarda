@@ -30,7 +30,7 @@ def get_prediction(username: str, duration: int):
             }
         print(results)
         push_predicted_metrics(results)
-        # time.sleep(0.5)
+        time.sleep(0.5)
     
     return {
         "message": "Prediction results have been pushed to message queue.",

@@ -2,6 +2,8 @@
 import re
 import base64
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import json
+
 import config.secrets
 
 def generate_metric_values(timestamp, metrics_data, instance, username):
@@ -54,6 +56,17 @@ def decrypt(ciphertext_b64: str, key: bytes) -> str:
 
     return plaintext.decode()
 
+def load_model_performance_from_JSON():
+    with open("./ml/artifacts/performance/model_performance.json", "r") as perf:
+        data = json.load(perf)
+
+    return data
+    
+def load_gru_performance_from_JSON():
+    with open("./ml/artifacts/performance/gru_performance.json", "r") as perf:
+        data = json.load(perf)
+        
+    return data
 
 def set_aws_access_keys(keys):
     config.secrets.AWS_ACCESS_KEY_ID = decrypt(keys["AWS_ACCESS_KEY_ID"], config.secrets.ENCRYPTION_KEY)
