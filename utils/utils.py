@@ -3,6 +3,7 @@ import re
 import base64
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import json
+import hashlib
 
 import config.secrets
 
@@ -55,6 +56,9 @@ def decrypt(ciphertext_b64: str, key: bytes) -> str:
     plaintext = aesgcm.decrypt(nonce, ciphertext, None)
 
     return plaintext.decode()
+
+def sha256_hash(s: str) -> str:
+    return hashlib.sha256(s.encode()).hexdigest()
 
 def load_model_performance_from_JSON():
     with open("./ml/artifacts/performance/model_performance.json", "r") as perf:

@@ -23,6 +23,8 @@ AWS_REGION = None
 USERNAME = os.getenv("USERNAME")
 ENCRYPTION_KEY = bytes(os.getenv("ENCRYPTION_KEY"), 'utf-8')
 
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 if not ENVIRONMENT:
     ENVIRONMENT = 'STG' # defaults to staging, if not overwritten by production

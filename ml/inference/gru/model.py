@@ -50,7 +50,7 @@ def gru_predict(df_original:pd.DataFrame, hours:int):
     predicted_dataframe["metrictime"] = predicted_dataframe["metrictime"].apply(lambda x:x + timedelta(minutes=5))
 
     # return results
-    return  predicted_dataframe[:13].reset_index(drop=True)
+    return  predicted_dataframe[:-1].reset_index(drop=True)
 
 
 

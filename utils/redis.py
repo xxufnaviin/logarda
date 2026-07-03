@@ -14,6 +14,10 @@ class Redis:
         # json dumps translates the dictionary into JSON formatted string to be unmarshalled at GO's backend
         r.lpush(queue_name, json.dumps(message))
 
-        
+    def set_key(r:redis.Redis, key, value):
+        # set key value pair in redis
+        r.set(key, value)
     
-    
+    def get_key(r:redis.Redis, key):
+        # get value of the key
+        return r.get(key)

@@ -1,19 +1,31 @@
-# Use a pipeline as a high-level helper
-from transformers import pipeline
+from llm.vectordb.client import ChromaDB
+from llm.client import LLM
 
-pipe = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+ChromaDB.init_client()
+LLM.init_client()
 
-messages = [
-    {"role": "user", "content": "Who are you?"},
-]
 
-response = pipe(messages, max_new_tokens = 20)
-response = response[0]["generated_text"][1]["content"]
+def generate_explanation(query:str, rag_query:str = None):
+    # get rag query
+    if rag_result:
+        rag_result = ChromaDB.query(rag_query)
 
-text = input(response)
-
-messages = [
-    {"role": "user", "content": text},
-]
-response = pipe(messages, max_new_tokens = 20)
-print(response[0]["generated_text"][1]["content"])
+    # feed into LLM
+    error_explanation, ok = LLM.generate_text(query, rag_result)
+    if ok:
+        return {
+            "data":{
+                "explanation":error_explanation["explanation"],
+                "solution": error_explanation["solution"]
+            },
+            "status": 200
+        }
+    
+    ## fallback to string only explanation
+    return {
+        "data": {
+            "explanation":error_explanation
+        },
+        "status": 200
+    }
+        

@@ -1,34 +1,29 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from datetime import datetime, timezone
+from fastapi import APIRouter, Depends
 import time
+import json
 
-from utils.redis import *
+from api.utils.helper import *
+from utils.utils import sha256_hash
 from ml.inference.predictor import predict
+from llm.inference import generate_explanation
+from api.models.analytics import MetricsPredictionRequest, LLMInferenceRequest
 
 router = APIRouter()
-r = Redis.create_connection()
-
-if config.secrets.ENVIRONMENT == "PRD":
-    PREDICTED_METRICS_STREAM = "predicted_metrics"
-else:
-    PREDICTED_METRICS_STREAM = "stg_predicted_metrics"
 
 @router.get("/predict")
-def get_prediction(username: str, duration: int):
-    if not username or not duration: 
+def get_prediction(request:MetricsPredictionRequest = Depends()):
+    if not request.username or not request.duration: 
         return { 
             "message": "Request parameters incomplete. Please include BOTH username and duration.", 
             "status": "Failed" 
         }
     
-    for results, err in predict(username, hours=duration):
+    for results, err in predict(request.username, hours=request.duration):
         if err:
             return {
                 "message": "No records found for user. No predictions have been made",
                 "status": "Failed"
             }
-        print(results)
         push_predicted_metrics(results)
         time.sleep(0.5)
     
@@ -37,11 +32,24 @@ def get_prediction(username: str, duration: int):
         "status": "Success"
     }
 
+@router.post("/llm/inference")
+def get_error_explanation(request:LLMInferenceRequest):
+    # form rag query from request, only using keywords for simpler query without noise
+    # example: InternalFailure in EC2 / AccessDenied in S3
+    rag_query = generate_rag_query(request.errorCode, request.serviceName)
+    query = generate_query(request.errorCode, request.serviceName, request.eventName, request.errorMessage)
 
-def push_predicted_metrics(results):
-    for _, row in results.iterrows():
-        message = row.to_dict()
-        message["metrictime"] = datetime.strptime(message["metrictime"].strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-        message["metrictime"] = message["metrictime"].isoformat()
-        print(message)
-        Redis.enqueue_message(r, PREDICTED_METRICS_STREAM, message)
+    # generate hash key based on errorcode, service and event name
+    hash_key = f"kvcache:{sha256_hash(f'{request.errorCode}{request.serviceName}{request.eventName}')}"
+
+    # if value is cached then no get results 
+    results, ok = check_kv_cache(hash_key)
+    if ok:
+        result = json.loads(results)
+        return result
+
+    # get llm results and append it to kv cache
+    results = generate_explanation(query, rag_query)
+    append_kv_cache(hash_key, json.dumps(results))
+
+    return results
