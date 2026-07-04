@@ -6,7 +6,7 @@ from api.utils.helper import *
 from utils.utils import sha256_hash
 from ml.inference.predictor import predict
 from llm.inference import generate_explanation
-from api.models.analytics import MetricsPredictionRequest, LLMInferenceRequest
+from api.models.analytics import MetricsPredictionRequest, LLMInferenceRequest, LLMInferenceUserRequest
 
 router = APIRouter()
 
@@ -32,7 +32,7 @@ def get_prediction(request:MetricsPredictionRequest = Depends()):
         "status": "Success"
     }
 
-@router.post("/llm/inference")
+@router.post("/llm/inference/structured")
 def get_error_explanation(request:LLMInferenceRequest):
     # form rag query from request, only using keywords for simpler query without noise
     # example: InternalFailure in EC2 / AccessDenied in S3
@@ -52,5 +52,12 @@ def get_error_explanation(request:LLMInferenceRequest):
     # get llm results and append it to kv cache
     results = generate_explanation(query, rag_query)
     append_kv_cache(hash_key, json.dumps(results))
+
+    return results
+
+@router.post("/llm/inference/unstructured")
+def get_error_explanation_user(request:LLMInferenceUserRequest):
+    # get llm results and append it to kv cache
+    results = generate_explanation(request.query)
 
     return results

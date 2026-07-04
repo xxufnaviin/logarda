@@ -13,3 +13,6 @@ class LLMInferenceRequest(BaseModel):
     serviceName:str 
     eventName:str 
     username:str 
+
+class LLMInferenceUserRequest(BaseModel):
+    query:str

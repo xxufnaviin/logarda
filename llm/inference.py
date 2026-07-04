@@ -9,6 +9,8 @@ def generate_explanation(query:str, rag_query:str = None):
     # get rag query
     if rag_query:
         rag_result = ChromaDB.query(rag_query)
+    else:
+        rag_result = None    
 
     print(rag_result)
     # feed into LLM
