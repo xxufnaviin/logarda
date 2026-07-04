@@ -13,5 +13,3 @@ class LLMInferenceRequest(BaseModel):
     serviceName:str 
     eventName:str 
     username:str 
-    explanation:str
-    errorExplained:bool

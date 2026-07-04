@@ -18,6 +18,7 @@ class LLM:
                     "content": (
                         "You are a system error explanation assistant.\n"
                         "You MUST return ONLY valid JSON. No markdown, no extra text.\n\n"
+                        "You MUST cater for escape sequences in text and handle them appropriately considering it will be parsed in GoLang\n\n"
                         "Output format:\n"
                         "{\n"
                         '  "explanation": string,\n'
@@ -25,7 +26,7 @@ class LLM:
                         "}\n\n"
                         "Rules:\n"
                         "- explanation: simple, non-technical, easy to understand\n"
-                        "- solution: numbered step-by-step fixes\n"
+                        "- solution: numbered step-by-step fixes STRICTLY TO LIST FORMAT\n"
                         "- If RAG context is provided, you may use it, but DO NOT depend on it.\n"
                         "- If RAG context is missing or empty (None/null/''), ignore it completely.\n"
                         "- Focus on the error message as the primary source of truth.\n"
