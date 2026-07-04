@@ -6,6 +6,7 @@ import json
 from ml.data.prepare import prepare_data
 from ml.training.gru import model as gru
 from ml.training.lightgbm import model as lightgbm
+from ml.training.linear import model as linear
 from ml.training.lightgbm.preprocess import get_low_feature_importance
 
 warnings.filterwarnings("ignore")
@@ -20,6 +21,8 @@ def train_time_series_models():
     # train both gru model and lightgbm model
     features_gru = gru.train_and_save(df_train, df_validate, df_test, remove_cols=gru_columns)
     features_lgb = lightgbm.train_and_save(df_train, df_validate, df_test, remove_cols=lightgbm_cols)
+    linear.train_and_save(df_train, df_validate, df_test, remove_cols=lightgbm_cols)
+
 
     with open("ml/artifacts/features/features.json", "w") as file:
         json.dump({

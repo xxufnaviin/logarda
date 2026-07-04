@@ -1,4 +1,5 @@
 from utils.postgres import *
+from datetime import datetime, timezone
 import pandas as pd
 
 def load_data(type:str, username = None):
@@ -7,7 +8,11 @@ def load_data(type:str, username = None):
 
     if type == "train":
         # select all metrics for training
-        df = pd.read_sql("SELECT * FROM metrics WHERE metrictime <= '2026-06-21'", engine)
+        df_all = pd.read_sql("SELECT * FROM metrics", engine)
+        cutoff = pd.Timestamp(datetime.now(timezone.utc).date()) - pd.Timedelta(weeks=8) # set train period
+
+        # filter
+        df = df_all[df_all['metrictime'] >= cutoff].reset_index(drop=True)
 
     elif type == "predict":
         # select only last one hour of data for prediction

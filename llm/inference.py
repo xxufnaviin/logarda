@@ -7,9 +7,10 @@ LLM.init_client()
 
 def generate_explanation(query:str, rag_query:str = None):
     # get rag query
-    if rag_result:
+    if rag_query:
         rag_result = ChromaDB.query(rag_query)
 
+    print(rag_result)
     # feed into LLM
     error_explanation, ok = LLM.generate_text(query, rag_result)
     if ok:

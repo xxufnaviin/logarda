@@ -45,6 +45,7 @@ def get_error_explanation(request:LLMInferenceRequest):
     # if value is cached then no get results 
     results, ok = check_kv_cache(hash_key)
     if ok:
+        print("fetched cache results")
         result = json.loads(results)
         return result
 

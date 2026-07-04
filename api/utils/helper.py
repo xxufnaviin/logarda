@@ -24,7 +24,7 @@ def append_kv_cache(key:str, value:str):
 
 def check_kv_cache(key:str):
     # check if key exist
-    value = Redis.get_key(key)
+    value = Redis.get_key(r, key)
     if value:
         return value, True
     else:

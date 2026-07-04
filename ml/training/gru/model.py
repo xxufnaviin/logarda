@@ -23,14 +23,13 @@ def train_and_save(df_train:pd.DataFrame, df_validate:pd.DataFrame, df_test:pd.D
 
 def train_model(train_dataset, validate_dataset, feature_size):
     model_gru = Sequential([
-        GRU(64, input_shape=(12, feature_size), return_sequences=True),
-        GRU(64, input_shape=(12, feature_size), return_sequences=False),
-        Dense(16),
+        GRU(64, input_shape=(12, feature_size)), # 3 because 3 inputs only (pre-feature engineered)
+        Dense(32),
         Dense(3)
     ])
 
     model_gru.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001),
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0003),
         loss=tf.keras.losses.LogCosh(),
         metrics=['mae']
     )
