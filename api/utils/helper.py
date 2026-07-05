@@ -18,11 +18,11 @@ def push_predicted_metrics(results):
         print(message)
         Redis.enqueue_message(r, PREDICTED_METRICS_STREAM, message)
 
-def append_kv_cache(key:str, value:str):
+def append_cache(key:str, value:str):
     # append to cache
     Redis.set_key(r, key, value)
 
-def check_kv_cache(key:str):
+def check_cache(key:str):
     # check if key exist
     value = Redis.get_key(r, key)
     if value:

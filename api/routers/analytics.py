@@ -43,21 +43,21 @@ def get_error_explanation(request:LLMInferenceRequest):
     hash_key = f"kvcache:{sha256_hash(f'{request.errorCode}{request.serviceName}{request.eventName}')}"
 
     # if value is cached then no get results 
-    results, ok = check_kv_cache(hash_key)
+    results, ok = check_cache(hash_key)
     if ok:
         print("fetched cache results")
         result = json.loads(results)
         return result
 
-    # get llm results and append it to kv cache
+    # get llm results and append it to cache
     results = generate_explanation(query, rag_query)
-    append_kv_cache(hash_key, json.dumps(results))
+    append_cache(hash_key, json.dumps(results))
 
     return results
 
 @router.post("/llm/inference/unstructured")
 def get_error_explanation_user(request:LLMInferenceUserRequest):
-    # get llm results and append it to kv cache
+    # get llm results and append it to cache
     results = generate_explanation(request.query)
 
     return results
