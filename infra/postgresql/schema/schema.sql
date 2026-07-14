@@ -12,20 +12,6 @@ CREATE TABLE metrics (
         REFERENCES users(username)
 );
 
-CREATE TABLE predicted_metrics (
-    metricTime TIMESTAMP NOT NULL,
-    instanceID VARCHAR NOT NULL,
-    cpu DOUBLE PRECISION NOT NULL,
-    network DOUBLE PRECISION NOT NULL,
-    memory DOUBLE PRECISION NOT NULL,
-    username VARCHAR NOT NULL, 
-    
-    PRIMARY KEY (metricTime, instanceID) --composite primary key to prevent double entries at same timestamp for single instance
-    CONSTRAINT fk_predicted_metrics_user
-        FOREIGN KEY (username)
-        REFERENCES users(username)
-);
-
 CREATE TABLE logs (
     eventTime TIMESTAMP NOT NULL,
     errorCode VARCHAR NOT NULL,-- only store error logs

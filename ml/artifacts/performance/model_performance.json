@@ -11,15 +11,27 @@
       "mae": 0.04,
       "mse": 0.02,
       "rmse": 0.13,
-      "mape": 5.10,
-      "smape": 5.28
+      "mape": 4.97,
+      "smape": 5.14,
+      "params": {
+        "model": "Ridge",
+        "alpha": 10,
+        "fit_intercept": false
+      }
     },
     "LightGBM": {
       "mae": 0.04,
       "mse": 0.02,
       "rmse": 0.13,
-      "mape": 5.22,
-      "smape": 5.28
+      "mape": 5.05,
+      "smape": 5.17,
+      "params": {
+        "n_estimators": 100,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "max_depth": 5,
+        "min_child_samples": 50
+      }
     },
     "GRU_32": {
       "mae": 0.03,
@@ -66,7 +78,6 @@
     }
   },
 
-
   "network": {
     "ARIMA": {
       "mae": 193773.26,
@@ -76,20 +87,32 @@
       "smape": 47.45
     },
     "LinearRegression": {
-      "mae": 72598.28,
-      "mse": 63229924557.80,
-      "rmse": 251455.61,
-      "mape": 25.78,
-      "smape": 21.11
+      "mae": 72428.34,
+      "mse": 61606835387.74,
+      "rmse": 248207.24,
+      "mape": 25.93,
+      "smape": 21.16,
+      "params": {
+        "model": "Ridge",
+        "alpha": 10,
+        "fit_intercept": false
+      }
     },
     "LightGBM": {
-      "mae": 41178.86,
-      "mse": 51815301250.94,
-      "rmse": 227629.75,
-      "mape": 15.42,
-      "smape": 14.93
+      "mae": 41421.04,
+      "mse": 51691344034.27,
+      "rmse": 227357.30,
+      "mape": 15.04,
+      "smape": 14.56,
+      "params": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "max_depth": -1,
+        "min_child_samples": 50
+      }
     },
-    "GRU_32": {
+        "GRU_32": {
       "mae": 47643.82,
       "mse": 53907804160.00,
       "rmse": 232180.55,
@@ -134,7 +157,6 @@
     }
   },
 
-  
   "memory": {
     "ARIMA": {
       "mae": 4.30,
@@ -147,15 +169,27 @@
       "mae": 0.18,
       "mse": 0.10,
       "rmse": 0.32,
-      "mape": 0.47,
-      "smape": 0.46
+      "mape": 0.46,
+      "smape": 0.46,
+      "params": {
+        "model": "Ridge",
+        "alpha": 0.01,
+        "fit_intercept": true
+      }
     },
     "LightGBM": {
-      "mae": 0.28,
-      "mse": 0.32,
+      "mae": 0.29,
+      "mse": 0.33,
       "rmse": 0.57,
-      "mape": 0.67,
-      "smape": 0.68
+      "mape": 0.69,
+      "smape": 0.69,
+      "params": {
+        "n_estimators": 100,
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "max_depth": 5,
+        "min_child_samples": 20
+      }
     },
     "GRU_32": {
       "mae": 0.44,
@@ -211,7 +245,7 @@
       },
       "ARIMA": 24.30,
       "LinearRegression": 8.64,
-      "LightGBM": 6.60,
+      "LightGBM": 6.44,
       "GRU_32": 6.12,
       "GRU_128_FE": 5.66,
       "GRU_128_NoFE": 5.91
