@@ -10,3 +10,4 @@ backup_*.sql
 466087c7-3ea6-488c-a8bf-39450a75e401
 *.sqlite3
 untitled_project
+simulate/
