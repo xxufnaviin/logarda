@@ -62,11 +62,11 @@
       }
     },
     "GRU_128_NoFE": {
-      "mae": 0.03,
-      "mse": 0.02,
-      "rmse": 0.13,
-      "mape": 3.43,
-      "smape": 3.74,
+      "mae": 0.12,
+      "mse": 0.03,
+      "rmse": 0.18,
+      "mape": 16.65,
+      "smape": 17.93,
       "params": {
         "gru_units": 128,
         "dense_units": 32,
@@ -141,11 +141,11 @@
       }
     },
     "GRU_128_NoFE": {
-      "mae": 46147.09,
-      "mse": 53521035264.00,
-      "rmse": 231346.14,
-      "mape": 13.15,
-      "smape": 13.81,
+      "mae": 198440.08,
+      "mse": 212444200960.00,
+      "rmse": 460916.69,
+      "mape": 28.86,
+      "smape": 43.90,
       "params": {
         "gru_units": 128,
         "dense_units": 32,
@@ -220,11 +220,11 @@
       }
     },
     "GRU_128_NoFE": {
-      "mae": 0.29,
-      "mse": 0.18,
-      "rmse": 0.43,
-      "mape": 0.74,
-      "smape": 0.74,
+      "mae": 3.80,
+      "mse": 19.73,
+      "rmse": 4.44,
+      "mape": 9.98,
+      "smape": 9.49,
       "params": {
         "gru_units": 128,
         "dense_units": 32,
@@ -247,8 +247,8 @@
       "LinearRegression": 8.64,
       "LightGBM": 6.44,
       "GRU_32": 6.12,
-      "GRU_128_FE": 5.66,
-      "GRU_128_NoFE": 5.91
+      "GRU_128_FE": 5.69,
+      "GRU_128_NoFE": 23.22
     }
   },
 
